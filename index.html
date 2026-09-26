@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบการจัดการเรียนรู้ รายวิชาชีววิทยา</title>
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* นำเข้าฟอนต์ภาษาไทย */
+        @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&display=swap');
+        
+        body { 
+            background-color: #f0f4f8; /* สีพื้นหลังโทนฟ้า-เทาอ่อน แบบในคลิป */
+            font-family: 'Sarabun', sans-serif; 
+            color: #333;
+        }
+
+        /* ----- สไตล์หน้า Login ----- */
+        .title-text { color: #00897B; font-weight: bold; font-size: 1.4rem; line-height: 1.4; }
+        .subtitle-text { color: #555; font-size: 0.9rem; }
+        .login-card { background: white; border-radius: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); padding: 25px; }
+        .dashed-divider { border-top: 3px dashed #17a2b8; margin: 15px 0; opacity: 0.5; }
+        
+        /* ----- สไตล์ปุ่มเมนูหลัก (Dashboard) ----- */
+        .menu-btn { 
+            border-radius: 12px; cursor: pointer; padding: 15px 5px; color: white; 
+            font-weight: bold; text-align: center; font-size: 0.95rem; height: 100%;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            border: none; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .menu-btn i { font-size: 1.8rem; margin-bottom: 8px; }
+        
+        /* สีปุ่มถอดแบบจากคลิป */
+        .bg-1 { background-color: #4CAF50; } /* นักศึกษา */
+        .bg-2 { background-color: #2196F3; } /* เช็คชื่อ */
+        .bg-3 { background-color: #3F51B5; } /* ส่งงาน */
+        .bg-4 { background-color: #9C27B0; } /* ประวัติมาเรียน */
+        .bg-5 { background-color: #E91E63; } /* ประวัติส่งงาน */
+        .bg-6 { background-color: #FF9800; } /* ใบลา */
+        .bg-7 { background-color: #F44336; } /* คะแนนสอบ */
+        .bg-8 { background-color: #FFC107; color: #333 !important; } /* ตัดเกรด */
+        .bg-9 { background-color: #009688; } /* กิจกรรม */
+        .bg-10 { background-color: #1976D2; } /* ทะเบียน */
+
+        /* ----- สไตล์ฟอร์ม (แพทเทิร์นกรอบเส้นประแบบในคลิป) ----- */
+        .form-card { 
+            background: white; border: 2px dashed #4CAF50; /* เส้นประสีเขียว */
+            border-radius: 20px; padding: 20px; margin-bottom: 20px; 
+        }
+        .form-card-blue { border-color: #2196F3; } /* เส้นประสีฟ้าสำหรับฟอร์มอื่นๆ */
+        
+        .section-page { display: none; }
+        
+        /* สไตล์ Input ให้ออกมาเหมือนต้นฉบับ */
+        .form-control, .form-select { border-radius: 8px; background-color: #fdfdfd; }
+        label { font-weight: 600; color: #444; margin-bottom: 5px; font-size: 0.95rem;}
+    </style>
+</head>
+<body>
+
+    <div class="container mt-4 mb-5" style="max-width: 500px;">
+        
+        <!-- ================= ส่วนหัว (แสดงตลอด) ================= -->
+        <div class="text-center mb-4">
+            <h2 class="title-text">ระบบการจัดการเรียนรู้ใน<br>ชั้นเรียนรายวิชาชีววิทยา</h2>
+            <p class="subtitle-text">คณะวิทยาศาสตร์ มหาวิทยาลัยราชภัฏอุบลราชธานี</p>
+        </div>
+
+        <!-- ================= Login Page ================= -->
+        <div id="page-login" class="section-page login-card mx-auto" style="display: block;">
+            <h4 class="text-center text-info mb-3">🔐 ลงชื่อเข้าสู่ระบบ</h4>
+            <div class="dashed-divider"></div>
+            
+            <div class="mb-3">
+                <label>เลือกสถานะ 👤:</label>
+                <select class="form-select text-secondary">
+                    <option>👩‍🏫 อาจารย์ผู้สอน</option>
+                </select>
+            </div>
+            
+            <div class="mb-3">
+                <label>ชื่อผู้ใช้ (Username) 👤:</label>
+                <input type="text" id="username" class="form-control" placeholder="เช่น admin (หรือปล่อยว่างหากใช้รหัสเดิม)">
+            </div>
+            
+            <div class="mb-3">
+                <label>รหัสผ่านอาจารย์ 🔑:</label>
+                <input type="password" id="password" class="form-control" placeholder="********">
+            </div>
+            
+            <button onclick="loginApp()" id="btnLogin" class="btn btn-success w-100 rounded-pill fw-bold py-2 mb-2">
+                เข้าสู่ระบบอาจารย์ 🌿
+            </button>
+            <button class="btn btn-secondary w-100 rounded-pill py-2" style="background-color: #6c757d;">
+                📝 สมัครใช้งานสำหรับอาจารย์ท่านอื่น
+            </button>
+        </div>
+
+        <!-- ================= Dashboard ================= -->
+        <div id="page-dashboard" class="section-page">
+            <div class="text-center mb-4">
+                <h5 class="text-primary fw-bold">👨‍🏫 ระบบอาจารย์ผู้สอน</h5>
+                <h5 class="fw-bold" style="color: #00897B;" id="teacher-name">Dr.Kritsada Seejandee 🔬</h5>
+            </div>
+            
+            <div class="row g-2 mb-4">
+                <div class="col-6"><div class="menu-btn bg-1" onclick="showPage('page-students')">🎓<br>1. นักศึกษา</div></div>
+                <div class="col-6"><div class="menu-btn bg-2" onclick="showPage('page-attendance')">📸<br>2. เช็คชื่อ</div></div>
+                <div class="col-6"><div class="menu-btn bg-3">📁<br>3. ส่งงาน</div></div>
+                <div class="col-6"><div class="menu-btn bg-4">📊<br>4. ประวัติการมาเรียน</div></div>
+                <div class="col-6"><div class="menu-btn bg-5">📈<br>5. ประวัติการส่งงาน</div></div>
+                <div class="col-6"><div class="menu-btn bg-6">📨<br>6. ใบลา</div></div>
+                <div class="col-6"><div class="menu-btn bg-7">🎯<br>7. คะแนนสอบ</div></div>
+                <div class="col-6"><div class="menu-btn bg-8">🏆<br>8. ตัดเกรด</div></div>
+                <div class="col-6"><div class="menu-btn bg-9">⛺<br>9. กิจกรรม/อบรม</div></div>
+                <div class="col-6"><div class="menu-btn bg-10">📘<br>10. ทะเบียน<br><small style="font-size: 10px;">นักศึกษา ครุศาสตร์ฯ</small></div></div>
+            </div>
+
+            <div class="row g-2">
+                <div class="col-6"><button class="btn btn-danger w-100 rounded-pill"><i class="fa-solid fa-gear"></i> จัดการบัญชีผู้สอน</button></div>
+                <div class="col-6"><button class="btn btn-danger w-100 rounded-pill" onclick="logoutApp()">🚪 ออก</button></div>
+            </div>
+        </div>
+
+        <!-- ================= 1. นักศึกษา (แพทเทิร์นกรอบเส้นประสีเขียว) ================= -->
+        <div id="page-students" class="section-page">
+            <button class="btn btn-sm btn-outline-secondary mb-3 rounded-pill" onclick="showPage('page-dashboard')">⬅️ ย้อนกลับ</button>
+            
+            <!-- กล่องฟอร์มเส้นประ 1 -->
+            <div class="form-card">
+                <h5 class="text-success fw-bold">🌱 เพิ่มข้อมูลนักศึกษา</h5>
+                <hr class="text-success">
+                <div class="mb-2"><label>เลขที่:</label><input type="text" class="form-control"></div>
+                <div class="mb-2"><label>รหัสนักศึกษา:</label><input type="text" id="stdId" class="form-control"></div>
+                <div class="mb-2"><label>ชื่อจริง:</label><input type="text" id="stdName" class="form-control"></div>
+                <div class="mb-2"><label>นามสกุล:</label><input type="text" class="form-control"></div>
+                
+                <div class="mb-2">
+                    <label>เพศ ⚧️:</label>
+                    <select class="form-select"><option>ชาย</option><option>หญิง</option></select>
+                </div>
+                
+                <div class="mb-3">
+                    <label>ห้องเรียน (Room) 🏫:</label>
+                    <select class="form-select" id="stdRoom"><option>2</option><option>1</option></select>
+                </div>
+
+                <div class="mb-3">
+                    <label>อัปโหลดรูปภาพ (ไม่บังคับ):</label>
+                    <input class="form-control" type="file">
+                </div>
+
+                <button onclick="addStudent()" id="btnAddStd" class="btn btn-success w-100 fw-bold mb-2">➕ เพิ่ม</button>
+                <div class="d-flex gap-2">
+                    <button class="btn text-white w-50 fw-bold" style="background-color: #9C27B0;">➕ เพิ่มห้องเรียนใหม่</button>
+                    <button class="btn btn-danger w-50 fw-bold">❌ ลบห้องเรียน</button>
+                </div>
+            </div>
+
+            <!-- กล่องฟอร์มเส้นประ 2 (นำเข้า Excel) -->
+            <div class="form-card" style="border-color: #2196F3;">
+                <h5 class="text-primary fw-bold">📥 นำเข้าข้อมูลนักศึกษาด้วยไฟล์ Excel</h5>
+                <hr class="text-primary">
+                <p class="text-muted" style="font-size: 0.85rem;">โครงสร้างไฟล์ต้องมีคอลัมน์: เลขที่, รหัสนักศึกษา, ชื่อจริง, นามสกุล, เพศ, อีเมล, ห้องเรียน...</p>
+                <input class="form-control mb-3" type="file">
+                <div class="d-flex gap-2">
+                    <button class="btn btn-primary w-50 fw-bold">📥 นำเข้าข้อมูล</button>
+                    <button class="btn btn-dark w-50 fw-bold">📄 โหลดไฟล์ต้นแบบ</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= 2. เช็คชื่อ (แพทเทิร์นกรอบเส้นประสีฟ้า) ================= -->
+        <div id="page-attendance" class="section-page">
+            <button class="btn btn-sm btn-outline-secondary mb-3 rounded-pill" onclick="showPage('page-dashboard')">⬅️ ย้อนกลับ</button>
+            
+            <div class="form-card form-card-blue">
+                <h5 class="text-primary fw-bold">📸 สแกน QR Code: การเข้าเรียน</h5>
+                <hr class="text-primary">
+                
+                <div class="mb-2"><label>เลือกวิชา 📚:</label><select class="form-select"><option>ชีววิทยา</option></select></div>
+                <div class="mb-3"><label>เลือกห้องเรียน 🏫:</label><select class="form-select"><option>2</option></select></div>
+                
+                <div class="mb-2"><label>คาบเรียน/สัปดาห์ที่ 🗓️:</label><input type="text" class="form-control" placeholder="เช่น สัปดาห์ที่ 1"></div>
+                
+                <div class="mb-3">
+                    <label>สถานะ (ก่อนสแกน):</label>
+                    <select id="attStatus" class="form-select">
+                        <option value="มาเรียน">🟢 มาเรียน</option>
+                        <option value="ขาดเรียน">🔴 ขาดเรียน</option>
+                    </select>
+                </div>
+
+                <div class="p-3 mb-3" style="background-color: #e0f7fa; border-radius: 10px;">
+                    <label class="text-info fw-bold">🔫 ใช้เครื่องสแกนบาร์โค้ด (USB/Bluetooth):</label>
+                    <input type="text" id="attId" class="form-control mt-2" placeholder="คลิกที่นี่ แล้วยิง QR Code...">
+                </div>
+
+                <button onclick="saveAttendance()" id="btnSaveAtt" class="btn btn-success w-100 fw-bold py-2 mb-2">🟢 เปิดกล้องเช็คชื่อ (Webcam/มือถือ)</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // ใส่ URL ที่ได้จาก Google Apps Script (เหมือนเดิม)
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzgPaDTMca_HUx77dDS_xPQ_fNFr53gESMnfI4c3jVszx2JfKdKygoai22-fnVxWNClJw/exec"; 
+
+        function showPage(pageId) {
+            document.querySelectorAll('.section-page').forEach(el => el.style.display = 'none');
+            document.getElementById(pageId).style.display = 'block';
+        }
+
+        function logoutApp() {
+            document.getElementById("username").value = "";
+            document.getElementById("password").value = "";
+            showPage('page-login');
+        }
+
+        async function callAPI(payload, btnElement, loadingText, defaultText) {
+            btnElement.disabled = true;
+            btnElement.innerHTML = loadingText;
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "text/plain;charset=utf-8" },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+                alert(result.message);
+                btnElement.disabled = false;
+                btnElement.innerHTML = defaultText;
+                return result;
+            } catch (error) {
+                alert("เชื่อมต่อไม่สำเร็จ หรือกำลังทดสอบ UI โดยยังไม่ใส่ API");
+                btnElement.disabled = false;
+                btnElement.innerHTML = defaultText;
+                return null;
+            }
+        }
+
+        async function loginApp() {
+            const u = document.getElementById("username").value;
+            const p = document.getElementById("password").value;
+            if(!u || !p) return alert("กรอกข้อมูลให้ครบ");
+            
+            // ปลอมการล็อกอินชั่วคราวเพื่อให้ดู UI ได้เลย (ถ้ายังไม่ใส่ SCRIPT_URL)
+            if(SCRIPT_URL.includes("AKfyc...")) {
+                document.getElementById("teacher-name").innerText = "Dr.Kritsada Seejandee 🔬";
+                showPage('page-dashboard');
+                return;
+            }
+
+            const btn = document.getElementById("btnLogin");
+            const res = await callAPI({ action: "login", username: u, password: p }, btn, "กำลังโหลดข้อมูลจาก Cloud... ⏳", "เข้าสู่ระบบอาจารย์ 🌿");
+            if(res && res.status === "success") { showPage('page-dashboard'); }
+        }
+
+        async function addStudent() {
+            const id = document.getElementById("stdId").value;
+            const name = document.getElementById("stdName").value;
+            if(!id || !name) return alert("กรอกรหัสและชื่อให้ครบ");
+            const btn = document.getElementById("btnAddStd");
+            await callAPI({ action: "addStudent", id: id, name: name }, btn, "กำลังบันทึก...", "➕ เพิ่ม");
+        }
+
+        async function saveAttendance() {
+            const id = document.getElementById("attId").value;
+            if(!id) return alert("กรุณากรอก/สแกน รหัสนักศึกษา");
+            const btn = document.getElementById("btnSaveAtt");
+            await callAPI({ action: "saveAttendance", id: id }, btn, "กำลังบันทึก...", "🟢 เปิดกล้องเช็คชื่อ (Webcam/มือถือ)");
+        }
+    </script>
+</body>
+</html>
